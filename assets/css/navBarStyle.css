@@ -1,0 +1,32 @@
+body{
+    overflow-x: hidden;
+}
+.gradient-text {
+    background: linear-gradient(65deg, #382CC5, #7C86DC);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+#search{
+    margin-left: 10px;
+}
+
+#search>input{
+    width: 300px;
+    background-color: white;
+    font-weight: bold;
+    /*color: #382CC5;*/
+
+}
+
+#search>button{
+    border: #382CC5 solid 2px;
+   /* color: #382CC5;*/
+    font-weight: bold;
+}
+
+#samplePos,#menuBar>li>a{
+    margin-left: 10px;
+    /*color: #382CC5;*/
+    font-weight: bold;
+}

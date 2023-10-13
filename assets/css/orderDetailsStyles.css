@@ -1,0 +1,31 @@
+#invoiceDetails>div:first-child{
+    font-weight: bold;
+}
+
+#invoiceDetails>div{
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+#orderDetails>div:first-child{
+    font-weight: bold;
+}
+
+#orderDetails>div{
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+button{
+    margin-left: 10px;
+    width:95px
+}
+
+#button>button:first-child{
+    margin-left: 0;
+}
+
+#button1>button:first-child{
+    margin-left: 0;
+    width:100px
+}
