@@ -115,4 +115,24 @@ update.on('click', () => {
 
 });
 
+/*Customer Form Reset*/
+reset.on('click', function(e) {
+    e.preventDefault();
+    customer_id.val(generateCustomerId());
+    name.val('');
+    address.val('');
+    contact.val('');
+    email.val('');
+});
+
+/*Customer Form Delete*/
+delete_btn.on('click', () => {
+
+    let customerIdValue = parseInt(customer_id.val(), 10);
+    let index = customer_db.findIndex(customer => customer.customer_id === customerIdValue);
+    customer_db.splice(index, 1);
+    populateStudentTable();
+    reset.click();
+
+});
 
