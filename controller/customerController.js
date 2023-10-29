@@ -2,9 +2,9 @@ import {customer_db} from "../db/db.js";
 import {CustomerModel} from "../model/customerModel.js";
 
 let submit = $('#Customer .btn-success').eq(0);
-let update = $('#Customer .btn-primary');
-let delete_btn = $('#Customer .btn-danger');
-let reset = $('#Customer .btn-warning');
+let update = $('#Customer .btn-primary').eq(0);
+let delete_btn = $('#Customer .btn-danger').eq(0);
+let reset = $('#Customer .btn-warning').eq(0);
 
 let customer_id = $('#customer_id');
 let name = $('#customer_name');
@@ -91,5 +91,28 @@ $('table').on('click', 'tbody tr', function() {
     email.val(emailValue);
 });
 
+/*Customer Form Update*/
+update.on('click', () => {
+
+    let customerIdValue = parseInt(customer_id.val(), 10);
+    let nameValue = name.val().trim();
+    let addressValue = address.val().trim();
+    let contactValue = contact.val().trim();
+    let emailValue = email.val().trim();
+
+    customer_db.map((customer) => {
+        if (customer.customer_id === customerIdValue){
+            customer.name = nameValue;
+            customer.address = addressValue;
+            customer.contact = contactValue;
+            customer.email = emailValue;
+        }
+    });
+
+    populateStudentTable();
+
+    resetColumns();
+
+});
 
 
