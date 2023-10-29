@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Pos System</title>
+  <meta name="viewport" content="height=device-height,width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="assets/bootstrap-5.3.1-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/navBarStyle.css">
   <link rel="stylesheet" href="assets/css/normalize_css.css">
@@ -110,8 +111,12 @@
               <textarea class="form-control" id="address" rows="3" placeholder="Address Here"></textarea>
             </div>
             <div class="mb-3">
-              <label for="salary" class="form-label">Salary</label>
-              <input type="number" class="form-control" id="salary" placeholder="Salary Here">
+              <label for="contact" class="form-label">Contact</label>
+              <input type="tel" class="form-control" id="contact" placeholder="Contact Here">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Email Here">
             </div>
             <div class="mt-1 button">
               <button id="submitBtn" type="submit" class="btn btn-success">Submit</button>
@@ -128,28 +133,11 @@
               <th scope="col">Customer Id</th>
               <th scope="col">Customer Name</th>
               <th scope="col">Address</th>
-              <th scope="col">Salary</th>
+              <th scope="col">Contact</th>
+              <th scope="col">Email</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Nimna Kaveesha</td>
-              <td>Kalutara</td>
-              <td>15000</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Lushan Godwin</td>
-              <td>Kalutara</td>
-              <td>20000</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Nipun Nirmal</td>
-              <td>Kalutara</td>
-              <td>25000</td>
-            </tr>
             </tbody>
           </table>
         </div>
@@ -409,7 +397,8 @@
 <script src="script/homeScript.js"></script>
 <script type="module" src="controller/customerController.js"></script>
 <script type="module" src="controller/itemController.js"></script>
-<script type="module" src="controller/itemController.js"></script>
+<script type="module" src="controller/orderDetailsController.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 </html>

@@ -4,7 +4,6 @@ const loadingScreen2 = document.querySelector('#Item');
 const loadingScreen3 = document.querySelector('#Order');
 const loadingScreen4 = document.querySelector('#orderDetails');
 const myFunction=function (i){
-    console.log("MyFunction Call")
     let id=['#home_page','#customer_page','#item_page','#order_page','#order_details_page'];
     let loadingScreens=[loadingScreen,loadingScreen1,loadingScreen2,loadingScreen3,loadingScreen4];
     for (let j = 0; j < id.length; j++) {
@@ -21,10 +20,8 @@ const myFunction=function (i){
 }
 
 window.addEventListener('load', ()=>{
-    console.log("Window Open")
     myFunction(0);
 });
-
 
 $(document).ready(function () {
     $('#home_page').on('click',  () => {
