@@ -9,7 +9,7 @@ let reset = $('#Item .btn-warning').eq(0);
 let itemCode = $('#item_code');
 let itemName = $('#item_name');
 let price = $('#price');
-let QtyOnHand = $('#QtyOnHand');
+let qtyOnHand = $('#QtyOnHand');
 
 
 /*Validation*/
@@ -38,7 +38,7 @@ function resetColumns() {
 }
 
 /*Validation*/
-function validation(value,message,test) {
+function validation(value,message,test){
     if(!value){
         showValidationError('Null Input','Input '+message);
         return false;
@@ -69,7 +69,7 @@ submit.on('click', () => {
     let itemCodeValue = parseInt(itemCode.val(), 10);
     let itemNameValue = itemName.val().trim();
     let priceValue = parseFloat(price.val());
-    let qtyOnHandValue = parseInt(QtyOnHand.val(), 10);
+    let qtyOnHandValue = parseInt(qtyOnHand.val(), 10);
 
     if(
         validation(itemNameValue, "item name", null) &&
@@ -99,9 +99,10 @@ submit.on('click', () => {
 
 /*Populate Table*/
 function populateItemTable(){
-    $('tbody').eq(0).empty();
+    console.log("Item table populate");
+    $('tbody').eq(1).empty();
     item_db.map((item) => {
-        $('tbody').eq(0).append(
+        $('tbody').eq(1).append(
             `<tr>
                 <th scope="row">${item.item_code}</th>
                 <td>${item.item_name}</td>
@@ -123,7 +124,7 @@ $('table').on('click', 'tbody tr', function() {
     itemCode.val(itemCodeValue);
     itemName.val(itemNameValue);
     price.val(priceValue);
-    QtyOnHand.val(qtyOnHandValue);
+    qtyOnHand.val(qtyOnHandValue);
 
 });
 
@@ -133,7 +134,7 @@ update.on('click', () => {
     let itemCodeValue = parseInt(itemCode.val(), 10);
     let itemNameValue = itemName.val().trim();
     let priceValue = price.val().trim();
-    let qtyOnHandValue = QtyOnHand.val().trim();
+    let qtyOnHandValue = qtyOnHand.val().trim();
 
     if(
         validation(itemNameValue, "item name", null) &&
@@ -169,7 +170,7 @@ reset.on('click', function(e) {
     itemCode.val(generateItemCode());
     itemName.val('');
     price.val('');
-    QtyOnHand.val('');
+    qtyOnHand.val('');
 });
 
 /*Customer Form Delete*/
