@@ -157,7 +157,7 @@
           <form id="form_input">
             <div class="mb-3">
               <label for="item_code" class="form-label">Item code</label>
-              <input type="number" class="form-control" id="item_code" placeholder="Item Code Here">
+              <input type="text" class="form-control" id="item_code" placeholder="Item Code Here" disabled>
             </div>
             <div class="mb-3">
               <label for="item_name" class="form-label">Item Name</label>
@@ -217,7 +217,9 @@
             </div>
             <div class="mb-3 col-md-11">
               <label for="customer_id1" class="form-label">Customer Id</label>
-              <input type="number" class="form-control" id="customer_id1" placeholder="Customer Id Here">
+              <select class="form-select" aria-label="Disabled select example" id="customer_id1">
+                <option selected>Select Customer Id</option>
+              </select>
             </div>
             <div class="mb-3 col-md-11">
               <label for="customer_name1" class="form-label">Customer Name</label>
@@ -256,27 +258,29 @@
             <div class="card-header text-center gradient-text">
               Order Details
             </div>
-            <div class="mb-3 col-md-11 mt-3">
+            <div class="m-3 col-md-11">
               <label for="item_code1" class="form-label">Item Code</label>
-              <input type="number" class="form-control" id="item_code1" placeholder="Item Code Here">
+              <select class="form-select" aria-label="Disabled select example" id="item_code1">
+                <option selected>Select Item Code</option>
+              </select>
             </div>
-            <div class="mb-3 col-md-11">
+            <div class="m-3 col-md-11">
               <label for="item_name1" class="form-label">Item Name</label>
               <input type="text" class="form-control" id="item_name1" placeholder="Item Name Here">
             </div>
-            <div class="mb-3 col-md-11">
+            <div class="m-3 col-md-11">
               <label for="price1" class="form-label">Price</label>
               <input type="number" class="form-control" id="price1" placeholder="Price Here">
             </div>
-            <div class="mb-3 col-md-11">
+            <div class="m-3 col-md-11">
               <label for="qty_on_hand" class="form-label">Qty on Hand</label>
               <input type="number" class="form-control" id="qty_on_hand" placeholder="Qty on hand Here">
             </div>
-            <div class="mb-3 col-md-11">
+            <div class="m-3 col-md-11">
               <label for="Qty" class="form-label">Total</label>
               <input type="number" class="form-control" id="Qty" placeholder="Qty Here">
             </div>
-            <div class="mt-1 mb-1" id="button1">
+            <div class="m-3" id="button1">
               <button id="addBtn" type="button" class="btn btn-primary">Add</button>
               <button type="reset" class="btn btn-warning">Reset</button>
             </div>
@@ -292,27 +296,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Pine apple</td>
-                  <td>120</td>
-                  <td>100</td>
-                  <td>10</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Orange</td>
-                  <td>80</td>
-                  <td>50</td>
-                  <td>10</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Banana</td>
-                  <td>200</td>
-                  <td>250</td>
-                  <td>10</td>
-                </tr>
                 </tbody>
               </table>
             </div>
@@ -380,6 +363,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script type="module" src="controller/customerController.js"></script>
 <script type="module" src="controller/itemController.js"></script>
+<script type="module" src="controller/orderController.js"></script>
 <script type="module" src="controller/orderDetailsController.js"></script>
 
 </body>

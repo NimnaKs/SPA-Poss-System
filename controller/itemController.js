@@ -16,13 +16,21 @@ let qtyOnHand = $('#QtyOnHand');
 
 /*Function to generate the next customer ID*/
 function generateItemCode() {
-    let itCode = 0;
+    let highestItemCode = 0;
+
     for (let i = 0; i < item_db.length; i++) {
-        if (item_db[i].item_code > itCode) {
-            itCode = item_db[i].item_code;
+        // Extract the numeric part of the item code
+        const numericPart = parseInt(item_db[i].item_code.split('-')[1]);
+
+        // Check if the numeric part is greater than the current highest
+        if (!isNaN(numericPart) && numericPart > highestItemCode) {
+            highestItemCode = numericPart;
         }
     }
-    return itCode + 1;
+
+    // Increment the highest numeric part and format as "item-XXX"
+    return `item-${String(highestItemCode + 1).padStart(3, '0')}`;
+
 }
 
 /*Auto-generate the customer ID when navigating to the main section*/
@@ -35,6 +43,7 @@ $('#item_page').on('click', function() {
 function resetColumns() {
     reset.click();
     itemCode.val(generateItemCode());
+    submit.prop("disabled", false);
 }
 
 /*Validation*/
@@ -66,7 +75,7 @@ function showValidationError(title, text) {
 /*Customer Form Submit*/
 submit.on('click', () => {
 
-    let itemCodeValue = parseInt(itemCode.val(), 10);
+    let itemCodeValue = itemCode.val();
     let itemNameValue = itemName.val().trim();
     let priceValue = parseFloat(price.val());
     let qtyOnHandValue = parseInt(qtyOnHand.val(), 10);
@@ -126,12 +135,14 @@ $('table').on('click', 'tbody tr', function() {
     price.val(priceValue);
     qtyOnHand.val(qtyOnHandValue);
 
+    submit.prop("disabled", true);
+
 });
 
 /*Customer Form Update*/
 update.on('click', () => {
 
-    let itemCodeValue = parseInt(itemCode.val(), 10);
+    let itemCodeValue = itemCode.val();
     let itemNameValue = itemName.val().trim();
     let priceValue = price.val().trim();
     let qtyOnHandValue = qtyOnHand.val().trim();
@@ -171,12 +182,13 @@ reset.on('click', function(e) {
     itemName.val('');
     price.val('');
     qtyOnHand.val('');
+    submit.prop("disabled", false);
 });
 
 /*Customer Form Delete*/
 delete_btn.on('click', () => {
 
-    let itemCodeValue = parseInt(itemCode.val(), 10);
+    let itemCodeValue = itemCode.val();
 
     Swal.fire({
         title: 'Are you sure?',
@@ -191,7 +203,7 @@ delete_btn.on('click', () => {
             let index = item_db.findIndex(item => item.item_code === itemCodeValue);
             item_db.splice(index, 1);
             populateItemTable();
-            reset.click();
+            resetColumns();
             Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
@@ -199,7 +211,6 @@ delete_btn.on('click', () => {
             )
         }
     });
-
 
 });
 

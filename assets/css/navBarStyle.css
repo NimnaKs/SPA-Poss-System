@@ -5,6 +5,7 @@ body{
     background: linear-gradient(65deg, #382CC5, #7C86DC);
     -webkit-background-clip: text;
     color: transparent;
+    font-weight: bold;
 }
 
 #search{
