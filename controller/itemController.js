@@ -37,6 +37,8 @@ function generateItemCode() {
 $('#item_page').on('click', function() {
     itemCode.val(generateItemCode());
     populateItemTable();
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
 });
 
 /*Reset Columns*/
@@ -44,6 +46,8 @@ function resetColumns() {
     reset.click();
     itemCode.val(generateItemCode());
     submit.prop("disabled", false);
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
 }
 
 /*Validation*/
@@ -135,6 +139,8 @@ $('#itemTable').on('click', 'tbody tr', function() {
     qtyOnHand.val(qtyOnHandValue);
 
     submit.prop("disabled", true);
+    delete_btn.prop("disabled", false);
+    update.prop("disabled", false);
 
 });
 
@@ -182,6 +188,8 @@ reset.on('click', function(e) {
     price.val('');
     qtyOnHand.val('');
     submit.prop("disabled", false);
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
 });
 
 /*Customer Form Delete*/

@@ -38,12 +38,17 @@ function generateCustomerId() {
 $('#customer_page').on('click', function() {
     customer_id.val(generateCustomerId());
     populateCustomerTable();
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
 });
 
 /*Reset Columns*/
 function resetColumns() {
     reset.click();
     customer_id.val(generateCustomerId());
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
+    submit.prop("disabled",false);
 }
 
 /*Validation*/
@@ -140,6 +145,8 @@ $('#customerTable').on('click', 'tbody tr', function() {
     email.val(emailValue);
 
     submit.prop("disabled", true);
+    delete_btn.prop("disabled", false);
+    update.prop("disabled", false);
 
 });
 
@@ -177,8 +184,6 @@ update.on('click', () => {
 
         resetColumns();
 
-        submit.prop("disabled", false);
-
     }
 
 });
@@ -192,6 +197,8 @@ reset.on('click', function(e) {
     contact.val('');
     email.val('');
     submit.prop("disabled", false);
+    delete_btn.prop("disabled", true);
+    update.prop("disabled", true);
 });
 
 /*Customer Form Delete*/
@@ -218,7 +225,6 @@ delete_btn.on('click', () => {
                 'Your file has been deleted.',
                 'success'
             )
-            submit.prop("disabled", false);
         }
     });
 
