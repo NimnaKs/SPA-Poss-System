@@ -231,7 +231,7 @@
             </div>
             <div class="mb-3 col-md-11">
               <label for="discount" class="form-label">Discount</label>
-              <input type="number" class="form-control" id="discount" placeholder="Discount Here">
+              <input type="number" class="form-control" id="discount" placeholder="Discount in percentage Here">
             </div>
             <div class="mb-3 col-md-11">
               <label for="sub_total" class="form-label">Sub Total</label>
@@ -248,8 +248,8 @@
             <div class="mt-1 mb-3" id="button">
               <button id="submitBtn2" type="submit" class="btn btn-success">Purchase</button>
               <button id="updateBtn2" type="button" class="btn btn-primary">Update</button>
-              <button type="button" class="btn btn-danger">Danger</button>
-              <button type="reset" class="btn btn-warning">Reset</button>
+              <button id="deleteBtn2" type="button" class="btn btn-danger">Delete</button>
+              <button id="resetBtn2" type="reset" class="btn btn-warning">Reset</button>
             </div>
           </div>
         </div>
@@ -282,10 +282,10 @@
             </div>
             <div class="m-3" id="button1">
               <button id="addBtn" type="button" class="btn btn-primary">Add</button>
-              <button type="reset" class="btn btn-warning">Reset</button>
+              <button id="resetItemDetailsBtn" type="reset" class="btn btn-warning">Reset</button>
             </div>
             <div class="col m-3">
-              <table class="table">
+              <table class="table" id="item-order-table">
                 <thead class="table-primary">
                 <tr>
                   <th scope="col">Item Code</th>

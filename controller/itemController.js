@@ -108,7 +108,6 @@ submit.on('click', () => {
 
 /*Populate Table*/
 function populateItemTable(){
-    console.log("Item table populate");
     $('tbody').eq(1).empty();
     item_db.map((item) => {
         $('tbody').eq(1).append(
