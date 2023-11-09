@@ -45,4 +45,7 @@ $(document).ready(function () {
     });
 })
 
+window.addEventListener("load", () => {
+    $("#preloader").css("display","none");
+});
 /*export { myFunction };*/
