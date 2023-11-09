@@ -43,4 +43,6 @@ $(document).ready(function () {
     $('#order_details_page').on('click', function () {
         myFunction(4);
     });
-});
+})
+
+/*export { myFunction };*/

@@ -31,6 +31,8 @@ let submitBtn=$('#submitBtn2');
 let updateBtn=$('#updateBtn2');
 let deleteBtn=$('#deleteBtn2');
 let resetBtn=$('#resetBtn2');
+let updateBtn2=$('#UpdateBtn3');
+let removeBtn=$('#removeBtn');
 
 let items = [];
 
@@ -41,6 +43,10 @@ function generateCurrentDate(){
 
 $('#order_page').on('click', function() {
    resetBtn.click();
+   updateBtn.prop("disabled", true);
+   deleteBtn.prop("disabled", true);
+   removeBtn.prop("disabled",true);
+   updateBtn2.prop("disabled",true);
 });
 
 /*Function to populate the CustomerId Combo Box*/
@@ -109,6 +115,9 @@ itemIdCB.on("change", function() {
     let existingItem = items.find(item => item.itemCode === selectedValue);
 
     if (existingItem) {
+        updateBtn2.prop("disabled", false);
+        removeBtn.prop("disabled",false);
+        add.prop("disabled", true);
         qty.val(existingItem.qtyValue);
     }
 });
@@ -144,7 +153,39 @@ function populateItemTable() {
 }
 
 /*Event handler for the "Add" button*/
-add.on("click", function() {
+add.on("click", function () {
+    let itemCodeValue = itemIdCB.val();
+    let qtyValue = parseInt(qty.val());
+
+    if (qtyOnHand.val() >= qtyValue) {
+        let itemNameValue = itemName.val();
+        let priceValue = price.val();
+        let qtyOnHandValue = qtyOnHand.val();
+
+        /*Add a new item to the items array*/
+        items.push({
+            itemCode: itemCodeValue,
+            itemName: itemNameValue,
+            priceValue: priceValue,
+            qtyOnHand: qtyOnHandValue,
+            qtyValue: qtyValue
+        });
+
+        /*Populate the Item table*/
+        populateItemTable();
+
+        /*Reset the item details*/
+        resetItemDetails.click();
+    } else {
+        showValidationError('Invalid Input', 'Out of stock');
+    }
+
+    total.val(calculateTotal());
+
+});
+
+updateBtn2.on("click",function () {
+
     let itemCodeValue = itemIdCB.val();
     let qtyValue = parseInt(qty.val());
 
@@ -164,32 +205,10 @@ add.on("click", function() {
         } else {
             showValidationError('Invalid Input', 'Out of stock');
         }
-    } else {
-        if (qtyOnHand.val() >= qtyValue) {
-            let itemNameValue = itemName.val();
-            let priceValue = price.val();
-            let qtyOnHandValue = qtyOnHand.val();
-
-            /*Add a new item to the items array*/
-            items.push({
-                itemCode: itemCodeValue,
-                itemName: itemNameValue,
-                priceValue: priceValue,
-                qtyOnHand: qtyOnHandValue,
-                qtyValue: qtyValue
-            });
-
-            /*Populate the Item table*/
-            populateItemTable();
-
-            /*Reset the item details*/
-            resetItemDetails.click();
-        } else {
-            showValidationError('Invalid Input', 'Out of stock');
-        }
     }
 
     total.val(calculateTotal());
+
 });
 
 function showValidationError(title, text) {
@@ -207,6 +226,9 @@ resetItemDetails.on("click", function () {
     itemName.val('');
     price.val('');
     qtyOnHand.val('');
+    updateBtn2.prop("disabled", true);
+    removeBtn.prop("disabled",true);
+    add.prop("disabled", false);
 });
 
 function calculateTotal() {
@@ -286,7 +308,14 @@ submitBtn.on("click", function () {
     items.forEach(item => {
         const orderDetail = new orderModel(orderId, item.itemCode, item.priceValue, item.qtyValue);
         order_details_db.push(orderDetail);
+
+        item_db.forEach((itemObj) => {
+            if (itemObj.item_code === item.itemCode) {
+                itemObj.qty_on_hand -= item.qtyValue;
+            }
+        });
     });
+
 
     // Display a success message
     Swal.fire(
@@ -324,7 +353,7 @@ resetBtn.on("click", function () {
     $("#item-order-table tbody").empty();
 });
 
-$("#deleteBtn").on("click", function () {
+deleteBtn.on("click", function () {
     /*Assuming you have an orderId that you want to delete*/
     const orderIdToDelete = orderId.val();
 
@@ -346,6 +375,15 @@ $("#deleteBtn").on("click", function () {
 
             /*Remove the corresponding order details from order_details_db (if needed)*/
             order_details_db = order_details_db.filter(orderDetail => orderDetail.order_id !== orderIdToDelete);
+
+            items.forEach(item => {
+                item_db.forEach((itemObj) => {
+                    if (itemObj.item_code === item.itemCode) {
+                        itemObj.qty_on_hand += item.qtyValue;
+                    }
+                });
+            });
+
             Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
@@ -355,3 +393,83 @@ $("#deleteBtn").on("click", function () {
     });
 
 });
+
+removeBtn.on("click", function () {
+    let index = items.findIndex(item => item.itemCode === itemIdCB.val());
+    items.splice(index, 1);
+    populateItemTable();
+    resetItemDetails.click();
+    total.val(calculateTotal());
+});
+
+$('#item-order-table').on('click', 'tbody tr', function() {
+
+    let itemCodeValue = $(this).find('th').text();
+    let itemNameValue = $(this).find('td:eq(0)').text();
+    let priceValue = $(this).find('td:eq(1)').text();
+    let qtyOnHandValue = $(this).find('td:eq(2)').text();
+    let qtyValue=$(this).find('td:eq(3)').text();
+
+    itemIdCB.val(itemCodeValue);
+    itemName.val(itemNameValue);
+    price.val(priceValue);
+    qtyOnHand.val(qtyOnHandValue);
+    qty.val(qtyValue);
+
+    updateBtn2.prop("disabled", false);
+    removeBtn.prop("disabled",false);
+    add.prop("disabled", true);
+
+
+});
+
+// Modify the event handler for clicking on a row in the order details table
+function populateFields(orderIdValue){
+
+    // Find the corresponding order in the order_db array
+    let order = order_db.find(order => order.order_id === orderIdValue);
+
+    // Check if the order is found
+    if (order) {
+        // Populate the order details on the order page
+        $("#order_id").val(order.order_id);
+        $("#order_date").val(order.order_date);
+        $("#customer_id1").val(order.customer_id);
+        $("#total").val(order.total);
+        $("#discount").val(order.discount);
+        $("#sub_total").val(calculateSubtotal(order.total, order.discount));
+        $("#Cash").val(order.cash);
+        $("#balance").val(calculateBalance(order.cash, order.total, order.discount));
+
+        // Populate the customer name based on the selected customer ID
+        let customerObj = $.grep(customer_db, function(customer) {
+            return customer.customer_id === order.customer_id;
+        });
+
+        if (customerObj.length > 0) {
+            // Access the first element in the filtered array
+            $("#customer_name1").val(customerObj[0].name);
+        }
+
+        // Populate the items table on the order page
+        items = order_details_db.filter(orderDetail => orderDetail.order_id === orderIdValue).map(orderDetail => {
+            // Find the corresponding item in the item_db array
+            let item = item_db.find(item => item.item_code === orderDetail.item_code);
+
+            return {
+                itemCode: item.item_code,
+                itemName: item.item_name,
+                priceValue: item.price,
+                qtyOnHand: item.qty_on_hand,
+                qtyValue: orderDetail.qty
+            };
+        });
+
+        populateItemTable();
+    } else {
+        // Show an error message if the order is not found
+        showValidationError('Order Not Found', 'The selected order details could not be found.');
+    }
+}
+
+export { populateFields };

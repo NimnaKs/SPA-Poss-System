@@ -281,7 +281,9 @@
               <input type="number" class="form-control" id="getQty" placeholder="Qty Here">
             </div>
             <div class="m-3" id="button1">
-              <button id="addBtn" type="button" class="btn btn-primary">Add</button>
+              <button id="addBtn" type="submit" class="btn btn-success">Add</button>
+              <button id="UpdateBtn3" type="button" class="btn btn-primary">Update</button>
+              <button id="removeBtn" type="button" class="btn btn-danger">Remove</button>
               <button id="resetItemDetailsBtn" type="reset" class="btn btn-warning">Reset</button>
             </div>
             <div class="col m-3">
@@ -314,42 +316,20 @@
       </div>
 
       <div class="col table1">
-        <table class="table">
+        <table class="table" id="item-details-table">
           <thead class="table-primary">
           <tr>
             <th scope="col">Order Id</th>
             <th scope="col">Order Date</th>
             <th scope="col">Customer Id</th>
-            <th scope="col">Price</th>
+            <th scope="col">Total</th>
             <th scope="col">Discount</th>
             <th scope="col">Sub Total</th>
+            <th scope="col">Cash</th>
+            <th scope="col">Balance</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>2023-08-04</td>
-            <td>1</td>
-            <td>12000</td>
-            <td>10%</td>
-            <td>10800</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>2023-08-04</td>
-            <td>2</td>
-            <td>12000</td>
-            <td>10%</td>
-            <td>10800</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>2023-08-04</td>
-            <td>3</td>
-            <td>12000</td>
-            <td>10%</td>
-            <td>10800</td>
-          </tr>
           </tbody>
         </table>
       </div>
