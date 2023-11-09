@@ -4,4 +4,4 @@ export const item_db = [];
 
 export const order_db = [];
 
-export let order_details_db = [];
+export const order_details_db = [];

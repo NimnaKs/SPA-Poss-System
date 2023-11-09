@@ -36,6 +36,9 @@ let removeBtn=$('#removeBtn');
 
 let items = [];
 
+let searchBtn=$('#search');
+let searchField=$('#searchField');
+
 /*generate current date*/
 function generateCurrentDate(){
     $("#order_date").val(new Date().toISOString().slice(0, 10));
@@ -47,6 +50,7 @@ $('#order_page').on('click', function() {
    deleteBtn.prop("disabled", true);
    removeBtn.prop("disabled",true);
    updateBtn2.prop("disabled",true);
+    searchField.attr("placeholder", "Search Order Id Here");
 });
 
 /*Function to populate the CustomerId Combo Box*/
@@ -351,6 +355,11 @@ resetBtn.on("click", function () {
 
     /*Clear the item order table*/
     $("#item-order-table tbody").empty();
+
+    updateBtn.prop("disabled", true);
+    deleteBtn.prop("disabled", true);
+    submitBtn.prop("disabled",false);
+
 });
 
 deleteBtn.on("click", function () {
@@ -374,7 +383,12 @@ deleteBtn.on("click", function () {
             }
 
             /*Remove the corresponding order details from order_details_db (if needed)*/
-            order_details_db = order_details_db.filter(orderDetail => orderDetail.order_id !== orderIdToDelete);
+            for (let i = 0; i < order_details_db.length; i++) {
+                if(order_details_db[i].order_id===orderIdToDelete){
+                        order_details_db.splice(i, 1);
+                }
+
+            }
 
             items.forEach(item => {
                 item_db.forEach((itemObj) => {
@@ -384,11 +398,14 @@ deleteBtn.on("click", function () {
                 });
             });
 
+            resetBtn.click();
+
             Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
                 'success'
             )
+
         }
     });
 
@@ -423,53 +440,84 @@ $('#item-order-table').on('click', 'tbody tr', function() {
 
 });
 
-// Modify the event handler for clicking on a row in the order details table
+/*Modify the event handler for clicking on a row in the order details table*/
 function populateFields(orderIdValue){
 
-    // Find the corresponding order in the order_db array
+    /*Find the corresponding order in the order_db array*/
     let order = order_db.find(order => order.order_id === orderIdValue);
 
-    // Check if the order is found
+    /*Check if the order is found*/
     if (order) {
-        // Populate the order details on the order page
-        $("#order_id").val(order.order_id);
+        /*Populate the order details on the order page*/
+        orderId.val(order.order_id);
         $("#order_date").val(order.order_date);
-        $("#customer_id1").val(order.customer_id);
-        $("#total").val(order.total);
-        $("#discount").val(order.discount);
-        $("#sub_total").val(calculateSubtotal(order.total, order.discount));
-        $("#Cash").val(order.cash);
-        $("#balance").val(calculateBalance(order.cash, order.total, order.discount));
+        customerIdCB.val(order.customer_id);
+        total.val(order.total);
+        discountInput.val(order.discount);
 
-        // Populate the customer name based on the selected customer ID
+        /*Calculate the subtotal and update the input*/
+        const discountValue = parseFloat(discountInput.val()) || 0;
+        const totalValue = parseFloat(total.val()) || 0;
+
+        const subtotalValue = totalValue - (totalValue * (discountValue / 100));
+        subTotalInput.val(subtotalValue.toFixed(2)); // Use toFixed to round to two decimal places
+
+        cashInput.val(order.cash);
+
+        /*Calculate the balance and update the input*/
+        const cashValue = parseFloat(cashInput.val()) || 0;
+        const balanceValue = cashValue - subtotalValue;
+        balanceInput.val(balanceValue.toFixed(2)); // Use toFixed to round to two decimal places
+
+        /*Populate the customer name based on the selected customer ID*/
         let customerObj = $.grep(customer_db, function(customer) {
             return customer.customer_id === order.customer_id;
         });
 
         if (customerObj.length > 0) {
-            // Access the first element in the filtered array
-            $("#customer_name1").val(customerObj[0].name);
+            /*Access the first element in the filtered array*/
+            customerName.val(customerObj[0].name);
         }
 
-        // Populate the items table on the order page
-        items = order_details_db.filter(orderDetail => orderDetail.order_id === orderIdValue).map(orderDetail => {
-            // Find the corresponding item in the item_db array
-            let item = item_db.find(item => item.item_code === orderDetail.item_code);
+        /*Populate the items table on the order page*/
+        items = order_details_db
+            .filter(orderDetail => orderDetail.order_id === orderIdValue)
+            .map(orderDetail => {
+                /*Find the corresponding item in the item_db array*/
+                let item = item_db.find(item => item && item.item_code === orderDetail.item_id);
 
-            return {
-                itemCode: item.item_code,
-                itemName: item.item_name,
-                priceValue: item.price,
-                qtyOnHand: item.qty_on_hand,
-                qtyValue: orderDetail.qty
-            };
-        });
+                if (item) {
+                    return {
+                        itemCode: item.item_code,
+                        itemName: item.item_name,
+                        priceValue: item.price,
+                        qtyOnHand: item.qty_on_hand,
+                        qtyValue: orderDetail.qty
+                    };
+                } else {
+                    /*Handle the case where the item is not found*/
+                    console.error(`Item not found for item code: ${orderDetail.item_code}`);
+                    return null; /*or handle it accordingly*/
+                }
+            });
+
+        /*Filter out items that are null (not found)*/
+        items = items.filter(item => item !== null);
 
         populateItemTable();
+
+        updateBtn.prop("disabled", false);
+        deleteBtn.prop("disabled", false);
+        submitBtn.prop("disabled",true);
+
     } else {
-        // Show an error message if the order is not found
+        /*Show an error message if the order is not found*/
         showValidationError('Order Not Found', 'The selected order details could not be found.');
     }
 }
 
-export { populateFields };
+searchBtn.on("click",function (){
+    populateFields(searchField.val());
+    searchField.val('');
+});
+
