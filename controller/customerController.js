@@ -12,9 +12,38 @@ let address = $('#address');
 let contact = $('#contact');
 let email = $('#email');
 
+let searchBtn=$('#search');
+let searchField=$('#searchField');
+
 /*Validation*/
 const emailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$");
 const mobilePattern = new RegExp("^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$");
+
+//customer search
+searchField.on('input', function () {
+    let search_term = searchField.val();
+
+    let results = customer_db.filter((item) =>
+
+        item.customer_id.toLowerCase().startsWith(search_term.toLowerCase()) || item.name.toLowerCase().startsWith(search_term.toLowerCase()) || item.address.toLowerCase().startsWith(search_term.toLowerCase()) ||
+        item.contact.toLowerCase().startsWith(search_term) || item.email.toLowerCase().startsWith(search_term.toLowerCase())
+
+    );
+
+    $('tbody').eq(0).empty();
+    results.map((item, index) => {
+        let tbl_row = `<tr>
+            <th scope="row">${item.customer_id}</th>
+            <td>${item.name}</td>
+            <td>${item.address}</td>
+            <td>${item.contact}</td>
+            <td>${item.email}</td>
+        </tr>`;
+        $('tbody').eq(0).append(tbl_row);
+    });
+
+});
+
 
 /*Function to generate the next customer ID*/
 function generateCustomerId() {
@@ -40,6 +69,7 @@ $('#customer_page').on('click', function() {
     populateCustomerTable();
     delete_btn.prop("disabled", true);
     update.prop("disabled", true);
+    searchField.attr("placeholder", "Search Customer Here");
 });
 
 /*Reset Columns*/

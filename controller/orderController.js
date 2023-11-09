@@ -39,6 +39,7 @@ let items = [];
 let searchBtn=$('#search');
 let searchField=$('#searchField');
 
+let search_order=true;
 /*generate current date*/
 function generateCurrentDate(){
     $("#order_date").val(new Date().toISOString().slice(0, 10));
@@ -50,7 +51,8 @@ $('#order_page').on('click', function() {
    deleteBtn.prop("disabled", true);
    removeBtn.prop("disabled",true);
    updateBtn2.prop("disabled",true);
-    searchField.attr("placeholder", "Search Order Id Here");
+   searchField.attr("placeholder", "Search Order Id Here");
+
 });
 
 /*Function to populate the CustomerId Combo Box*/
@@ -517,7 +519,9 @@ function populateFields(orderIdValue){
 }
 
 searchBtn.on("click",function (){
-    populateFields(searchField.val());
-    searchField.val('');
+    if(search_order){
+        populateFields(searchField.val());
+        searchField.val('');
+    }
 });
 
