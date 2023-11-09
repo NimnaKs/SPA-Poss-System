@@ -11,8 +11,30 @@ let itemName = $('#item_name');
 let price = $('#price');
 let qtyOnHand = $('#QtyOnHand');
 
+let searchBtn=$('#search');
+let searchField=$('#searchField');
 
-/*Validation*/
+//item search
+searchField.on('input', function () {
+    let search_term = searchField.val();
+
+    let results = item_db.filter((item) =>
+
+        item.item_code.toLowerCase().startsWith(search_term.toLowerCase()) || item.item_name.toLowerCase().startsWith(search_term.toLowerCase())
+    );
+
+    $('tbody').eq(1).empty();
+    results.map((item, index) => {
+        let tbl_row = `<tr>
+                <th scope="row">${item.item_code}</th>
+                <td>${item.item_name}</td>
+                <td>${item.price}</td>
+                <td>${item.qty_on_hand}</td>
+            </tr`;
+        $('tbody').eq(1).append(tbl_row);
+    });
+
+});
 
 /*Function to generate the next customer ID*/
 function generateItemCode() {
