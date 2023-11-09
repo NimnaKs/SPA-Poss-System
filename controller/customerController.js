@@ -1,4 +1,4 @@
-import {customer_db} from "../db/db.js";
+import {customer_db, item_db} from "../db/db.js";
 import {CustomerModel} from "../model/customerModel.js";
 
 let submit = $('#Customer .btn-success').eq(0);
@@ -18,13 +18,20 @@ const mobilePattern = new RegExp("^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|
 
 /*Function to generate the next customer ID*/
 function generateCustomerId() {
-    let custId = 0;
+    let highestCustId = 0;
+
     for (let i = 0; i < customer_db.length; i++) {
-        if (customer_db[i].customer_id > custId) {
-            custId = customer_db[i].customer_id;
+        // Extract the numeric part of the item code
+        const numericPart = parseInt(customer_db[i].customer_id.split('-')[1]);
+
+        // Check if the numeric part is greater than the current highest
+        if (!isNaN(numericPart) && numericPart > highestCustId) {
+            highestCustId = numericPart;
         }
     }
-    return custId + 1;
+
+    // Increment the highest numeric part and format as "item-XXX"
+    return `cust-${String(highestCustId + 1).padStart(3, '0')}`;
 }
 
 /*Auto-generate the customer ID when navigating to the main section*/
@@ -68,7 +75,7 @@ function showValidationError(title, text) {
 /*Customer Form Submit*/
 submit.on('click', () => {
 
-    let customerIdValue = parseInt(customer_id.val(), 10);
+    let customerIdValue = customer_id.val();
     let nameValue = name.val().trim();
     let addressValue = address.val().trim();
     let contactValue = contact.val().trim();
@@ -119,7 +126,7 @@ function populateCustomerTable(){
 }
 
 // Function to populate the form fields with data from a clicked table row
-$('table').on('click', 'tbody tr', function() {
+$('#customerTable').on('click', 'tbody tr', function() {
     let customerIdValue = $(this).find('th').text();
     let nameValue = $(this).find('td:eq(0)').text();
     let addressValue = $(this).find('td:eq(1)').text();
@@ -131,12 +138,15 @@ $('table').on('click', 'tbody tr', function() {
     address.val(addressValue);
     contact.val(contactValue);
     email.val(emailValue);
+
+    submit.prop("disabled", true);
+
 });
 
 /*Customer Form Update*/
 update.on('click', () => {
 
-    let customerIdValue = parseInt(customer_id.val(), 10);
+    let customerIdValue = customer_id.val();
     let nameValue = name.val().trim();
     let addressValue = address.val().trim();
     let contactValue = contact.val().trim();
@@ -167,6 +177,8 @@ update.on('click', () => {
 
         resetColumns();
 
+        submit.prop("disabled", false);
+
     }
 
 });
@@ -179,6 +191,7 @@ reset.on('click', function(e) {
     address.val('');
     contact.val('');
     email.val('');
+    submit.prop("disabled", false);
 });
 
 /*Customer Form Delete*/
@@ -199,12 +212,13 @@ delete_btn.on('click', () => {
             let index = customer_db.findIndex(customer => customer.customer_id === customerIdValue);
             customer_db.splice(index, 1);
             populateCustomerTable();
-            reset.click();
+            resetColumns();
             Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
                 'success'
             )
+            submit.prop("disabled", false);
         }
     });
 

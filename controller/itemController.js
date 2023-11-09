@@ -123,7 +123,7 @@ function populateItemTable(){
 }
 
 // Function to populate the form fields with data from a clicked table row
-$('table').on('click', 'tbody tr', function() {
+$('#itemTable').on('click', 'tbody tr', function() {
 
     let itemCodeValue = $(this).find('th').text();
     let itemNameValue = $(this).find('td:eq(0)').text();

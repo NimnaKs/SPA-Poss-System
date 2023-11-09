@@ -100,7 +100,7 @@
           <form class="form_input">
             <div class="mb-3">
               <label for="customer_id" class="form-label">Customer Id</label>
-              <input type="number" class="form-control" id="customer_id" placeholder="Customer Id Here">
+              <input type="text" class="form-control" id="customer_id" placeholder="Customer Id Here">
             </div>
             <div class="mb-3">
               <label for="customer_name" class="form-label">Customer Name</label>
@@ -127,7 +127,7 @@
           </form>
         </div>
         <div class="col table1">
-          <table class="table ">
+          <table class="table" id="customerTable">
             <thead class="table-primary">
             <tr>
               <th scope="col">Customer Id</th>
@@ -180,7 +180,7 @@
           </form>
         </div>
         <div class="col table1">
-          <table class="table ">
+          <table class="table" id="itemTable">
             <thead class="table-primary">
             <tr>
               <th scope="col">Item Code</th>
@@ -209,11 +209,11 @@
             </div>
             <div class="mb-3 col-md-11 mt-3">
               <label for="order_date" class="form-label">Order Date</label>
-              <input type="date" class="form-control" id="order_date" placeholder="Order Date Here">
+              <input type="date" class="form-control" id="order_date" placeholder="Order Date Here" disabled>
             </div>
             <div class="mb-3 col-md-11">
               <label for="order_id" class="form-label">Order Id</label>
-              <input type="number" class="form-control" id="order_id" placeholder="Order Id Here">
+              <input type="text" class="form-control" id="order_id" placeholder="Order Id Here" disabled>
             </div>
             <div class="mb-3 col-md-11">
               <label for="customer_id1" class="form-label">Customer Id</label>
@@ -223,11 +223,11 @@
             </div>
             <div class="mb-3 col-md-11">
               <label for="customer_name1" class="form-label">Customer Name</label>
-              <input type="number" class="form-control" id="customer_name1" placeholder="Customer Name Here">
+              <input type="text" class="form-control" id="customer_name1" placeholder="Customer Name Here" disabled>
             </div>
             <div class="mb-3 col-md-11">
               <label for="total" class="form-label">Total</label>
-              <input type="number" class="form-control" id="total" placeholder="Total Here">
+              <input type="number" class="form-control" id="total" placeholder="Total Here" disabled>
             </div>
             <div class="mb-3 col-md-11">
               <label for="discount" class="form-label">Discount</label>
@@ -235,7 +235,7 @@
             </div>
             <div class="mb-3 col-md-11">
               <label for="sub_total" class="form-label">Sub Total</label>
-              <input type="number" class="form-control" id="sub_total" placeholder="Sub Total Here">
+              <input type="number" class="form-control" id="sub_total" placeholder="Sub Total Here" disabled>
             </div>
             <div class="mb-3 col-md-11">
               <label for="Cash" class="form-label">Cash</label>
@@ -243,7 +243,7 @@
             </div>
             <div class="mb-3 col-md-11">
               <label for="balance" class="form-label">Balance</label>
-              <input type="number" class="form-control" id="balance" placeholder="Balance Here">
+              <input type="number" class="form-control" id="balance" placeholder="Balance Here" disabled>
             </div>
             <div class="mt-1 mb-3" id="button">
               <button id="submitBtn2" type="submit" class="btn btn-success">Purchase</button>
@@ -266,19 +266,19 @@
             </div>
             <div class="m-3 col-md-11">
               <label for="item_name1" class="form-label">Item Name</label>
-              <input type="text" class="form-control" id="item_name1" placeholder="Item Name Here">
+              <input type="text" class="form-control" id="item_name1" placeholder="Item Name Here" disabled>
             </div>
             <div class="m-3 col-md-11">
               <label for="price1" class="form-label">Price</label>
-              <input type="number" class="form-control" id="price1" placeholder="Price Here">
+              <input type="number" class="form-control" id="price1" placeholder="Price Here" disabled>
             </div>
             <div class="m-3 col-md-11">
               <label for="qty_on_hand" class="form-label">Qty on Hand</label>
-              <input type="number" class="form-control" id="qty_on_hand" placeholder="Qty on hand Here">
+              <input type="number" class="form-control" id="qty_on_hand" placeholder="Qty on hand Here" disabled>
             </div>
             <div class="m-3 col-md-11">
-              <label for="Qty" class="form-label">Total</label>
-              <input type="number" class="form-control" id="Qty" placeholder="Qty Here">
+              <label for="getQty" class="form-label">Getting Qty</label>
+              <input type="number" class="form-control" id="getQty" placeholder="Qty Here">
             </div>
             <div class="m-3" id="button1">
               <button id="addBtn" type="button" class="btn btn-primary">Add</button>
