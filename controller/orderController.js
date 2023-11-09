@@ -7,6 +7,9 @@ import {CustomerModel} from "../model/customerModel.js";
 import {order_db} from "../db/db.js";
 import {OrderModel} from "../model/orderModel.js";
 
+import {order_details_db} from "../db/db.js";
+import {orderModel} from "../model/orderDetailsModel.js";
+
 let customerIdCB = $('#customer_id1');
 let itemIdCB = $('#item_code1');
 let orderId=$('#order_id');
@@ -37,19 +40,7 @@ function generateCurrentDate(){
 }
 
 $('#order_page').on('click', function() {
-    generateCurrentDate();
-    populateCustomerIDs();
-    populateItemIDs();
-    orderId.val(generateOrderId());
-    customerName.val('');
-    itemName.val('');
-    price.val('');
-    qtyOnHand.val('');
-    total.val('');
-    discountInput.val('');
-    cashInput.val('');
-    subTotalInput.val('');
-    balanceInput.val('');
+   resetBtn.click();
 });
 
 /*Function to populate the CustomerId Combo Box*/
@@ -244,7 +235,123 @@ cashInput.on("input", function() {
     balanceInput.val(balanceValue);
 });
 
-submitBtn.on("click",function (){
-    
+submitBtn.on("click", function () {
+    // Get the data needed for the order
+    const orderDate = $("#order_date").val();
+    const orderId = $("#order_id").val();
+    const customerId = $("#customer_id1").val();
+    const total = $("#total").val();
+    const discount = $("#discount").val();
+    const cash = $("#Cash").val();
+
+    // Validate order data
+    if (!orderDate) {
+        showValidationError('Null Input', 'Please select an order date');
+        return;
+    }
+
+    if (!orderId) {
+        showValidationError('Null Input', 'Please generate an order ID');
+        return;
+    }
+
+    if (customerId === "Select Customer Id") {
+        showValidationError('Invalid Input', 'Please select a customer');
+        return;
+    }
+
+    if (!total || parseFloat(total) <= 0) {
+        showValidationError('Invalid Input', 'Total must be a positive number');
+        return;
+    }
+
+    if (!cash || parseFloat(cash) < 0) {
+        showValidationError('Invalid Input', 'Cash amount must be a positive number');
+        return;
+    }
+
+    const discountValue = parseFloat(discount);
+    if (isNaN(discountValue) || discountValue < 0 || discountValue > 100) {
+        showValidationError('Invalid Input', 'Discount must be a number between 0 and 100');
+        return;
+    }
+
+    // Create an order instance
+    const order = new OrderModel(orderDate, orderId, customerId, total, discount, cash);
+
+    // Add the order to the order_db array
+    order_db.push(order);
+
+    // Loop through the items in your order details
+    items.forEach(item => {
+        const orderDetail = new orderModel(orderId, item.itemCode, item.priceValue, item.qtyValue);
+        order_details_db.push(orderDetail);
+    });
+
+    // Display a success message
+    Swal.fire(
+        'Order Placed Successfully!',
+        'The order has been saved.',
+        'success'
+    );
+
+    resetBtn.click();
 });
 
+resetBtn.on("click", function () {
+    // Reset the form fields to their initial state
+    generateCurrentDate();
+    populateCustomerIDs();
+    populateItemIDs();
+    orderId.val(generateOrderId());
+    $("#total").val('');       // Reset the total
+    $("#discount").val('');    // Reset the discount
+    $("#Cash").val('');        // Reset the cash input
+    customerName.val('');
+    itemName.val('');
+    price.val('');
+    qtyOnHand.val('');
+    total.val('');
+    discountInput.val('');
+    cashInput.val('');
+    subTotalInput.val('');
+    balanceInput.val('');
+
+    /*Clear the items array*/
+    items = [];
+
+    /*Clear the item order table*/
+    $("#item-order-table tbody").empty();
+});
+
+$("#deleteBtn").on("click", function () {
+    /*Assuming you have an orderId that you want to delete*/
+    const orderIdToDelete = orderId.val();
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            /* Find and remove the order with the matching orderId from the order_db array*/
+            const indexToDelete = order_db.findIndex(order => order.order_id === orderIdToDelete);
+            if (indexToDelete !== -1) {
+                order_db.splice(indexToDelete, 1);
+            }
+
+            /*Remove the corresponding order details from order_details_db (if needed)*/
+            order_details_db = order_details_db.filter(orderDetail => orderDetail.order_id !== orderIdToDelete);
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+        }
+    });
+
+});
