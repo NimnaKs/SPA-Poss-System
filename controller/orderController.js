@@ -263,7 +263,10 @@ cashInput.on("input", function() {
     balanceInput.val(balanceValue);
 });
 
-submitBtn.on("click", function () {
+submitBtn.on("click", function (e) {
+
+    e.preventDefault();
+
     // Get the data needed for the order
     const orderDate = $("#order_date").val();
     const orderId = $("#order_id").val();

@@ -108,7 +108,8 @@ function showValidationError(title, text) {
 }
 
 /*Customer Form Submit*/
-submit.on('click', () => {
+submit.on('click', (e) => {
+    e.preventDefault();
 
     let customerIdValue = customer_id.val();
     let nameValue = name.val().trim();

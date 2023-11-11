@@ -99,7 +99,9 @@ function showValidationError(title, text) {
 }
 
 /*Customer Form Submit*/
-submit.on('click', () => {
+submit.on('click', (e) => {
+
+    e.preventDefault();
 
     let itemCodeValue = itemCode.val();
     let itemNameValue = itemName.val().trim();
