@@ -1,8 +1,10 @@
-<!--
+/*
+
 Project: Pos System
 Author: Nimna Kaveesha Sekara
 License: MIT (See the LICENSE file for details)
--->
+
+*/
 
 const loadingScreen = document.querySelector('#Home');
 const loadingScreen1 = document.querySelector('#Customer');
@@ -26,6 +28,7 @@ const myFunction=function (i){
 }
 
 window.addEventListener('load', ()=>{
+    $("#preloader").css("display","none");
     myFunction(0);
 });
 
@@ -51,7 +54,8 @@ $(document).ready(function () {
     });
 })
 
-window.addEventListener("load", () => {
+
+/*window.addEventListener("load", () => {
     $("#preloader").css("display","none");
-});
+});*/
 /*export { myFunction };*/
