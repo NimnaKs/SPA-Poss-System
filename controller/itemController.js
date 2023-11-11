@@ -61,6 +61,7 @@ $('#item_page').on('click', function() {
     populateItemTable();
     delete_btn.prop("disabled", true);
     update.prop("disabled", true);
+    searchField.attr("placeholder", "Search Item Here");
 });
 
 /*Reset Columns*/

@@ -69,6 +69,7 @@ function calculateBalance(cash, total, discount) {
 
 $('#order_details_page').on('click', function() {
     populateTableOrderDetails();
+    searchField.attr("placeholder", "Search Order Id Here");
 });
 
 
